@@ -313,6 +313,14 @@ auto eth0
 iface eth0 inet dhcp
 ```
 
+![image](https://user-images.githubusercontent.com/70105993/145676485-afe4be40-7839-4daa-b918-62dcce773af3.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676491-48809fb1-3a29-4462-9783-678250ecee47.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676496-f7635a31-126b-41a8-afe5-fc885a8fa814.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676500-206bfc4b-30c3-4621-8bc3-ad5d67435b3e.png)
+
 ## Soal 1
 > Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Foosha menggunakan iptables, tetapi Luffy tidak ingin menggunakan MASQUERADE.
 
@@ -320,6 +328,21 @@ Pada Foosha, jalankan command berikut
 ```
 iptables -t nat -A POSTROUTING -s 10.26.0.0/21 -o eth0 -j SNAT --to-source 192.168.122.105
 ```
+Command tersebut menggunakan POSTROUTING chain untuk mengubah alamat asal paket yang dikirim dari seluruh node dalam Topologi menjadi dari Foosha.
+
+**Pengujian**
+
+Pengujian dilakukan dengan melakukan ping ke suatu website, contohnya google.com.
+
+![image](https://user-images.githubusercontent.com/70105993/145676573-82767347-e6ba-4a58-aea2-a89888fb86af.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676531-3b8b05a5-82b7-4f83-b66a-7307e0518988.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676541-183f3435-a361-4b0b-830f-f6dab46584bc.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676549-05b049c6-356e-4ae1-a312-42fc8d46c10c.png)
+
+![image](https://user-images.githubusercontent.com/70105993/145676553-1255e460-674a-40c8-a424-c0720796e2e6.png)
 
 ## Soal 2
 > Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.

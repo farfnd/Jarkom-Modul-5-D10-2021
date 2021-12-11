@@ -34,9 +34,11 @@
 > Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.
 
 Command yang dijalankan di Doriki (DNS server) dan Jipangu (DHCP server):
+
 ```bash
 iptables -A FORWARD -d 10.26.7.128/29 -i eth0 -p tcp --dport 80 -j DROP
 ```
+
 Command tersebut berfungsi menolak/drop seluruh paket yang menuju subnet A1 (Doriki-Jipangu-Water7) melalui port 80 (HTTP).
 
 **Pengujian**
@@ -49,6 +51,20 @@ Pengujian dilakukan dengan melakukan ping ke situs web yang masih menggunakan pr
 
 ## Soal 3
 > Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop.
+
+Command yang dijalankan di Doriki (DNS server) dan Jipangu (DHCP server):
+
+```bash
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+Command tersebut menggunakan INPUT chain untuk membatasi koneksi masuk maksimal 3 (`--connlimit-above 3`) dari mana saja (`--connlimit-mask 0`) dan menolak/drop paket yang masuk dengan protokol (`-p`) ICMP jika koneksi masuk di atas 3.
+
+**Pengujian**
+
+Pengujian dilakukan dengan melakukan ping ke IP Doriki/Jipangu dari node lain secara bersamaan hingga ping dilakukan di lebih dari 3 node.
+
+![recording(3)](https://user-images.githubusercontent.com/70105993/145673457-03a856d5-a74c-4c5c-846b-f5761ef70b3b.gif)
 
 ## Soal 4-5
 > Kemudian kalian diminta untuk membatasi akses ke Doriki yang berasal dari subnet Blueno, Cipher, Elena dan Fukuro dengan beraturan sebagai berikut:
@@ -119,3 +135,27 @@ Pengujian dilakukan dengan melakukan ping ke IP Doriki (10.26.7.130) dari client
 
 ## Soal 6
 > Karena kita memiliki 2 Web Server, Luffy ingin Guanhao disetting sehingga setiap request dari client yang mengakses DNS Server akan didistribusikan secara bergantian pada Jorge dan Maingate
+
+Command yang dijalankan di Guanhao:
+```bash
+iptables -t nat -A PREROUTING -p tcp -d 10.26.7.130 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.26.7.138
+iptables -t nat -A PREROUTING -p tcp -d 10.26.7.130 -j DNAT --to-destination 10.26.7.139
+
+iptables -t nat -A POSTROUTING -p tcp -d 10.26.7.138 -j SNAT --to-source 10.26.7.130
+iptables -t nat -A POSTROUTING -p tcp -d 10.26.7.139 -j SNAT --to-source 10.26.7.130
+```
+
+Command tersebut menggunakan PREROUTING chain untuk mengarahkan paket yang awalnya menuju ke IP Doriki (10.26.7.130) sebagai DNS server ke Maingate (10.26.7.138) dan Jorge (10.26.7.139), serta POSTROUTING chain untuk mengubah alamat asal paket yang dikirim dari Maingate dan Jorge menjadi dari Doriki.
+
+**Pengujian**
+
+1. Install Netcat pada node Doriki, Guanhao, Elena, Fukurou, Maingate, dan Jorge dengan command
+
+    ```bash
+    apt-get update
+    apt-get install netcat -y
+    ```
+2. Pada Maingate dan Jorge, gunakan Netcat untuk menangkap request pada port tertentu, contohnya port 80 dengan command `nc -l -p 80`
+3. Pada Elena dan Fukurou, gunakan Netcat untuk mengirim request ke Doriki melalui port tertentu (sama dengan port yang di-listen pada Maingate dan Jorge), contohnya port 80 dengan command `nc 10.26.7.130 80`
+
+    ![recording(4)](https://user-images.githubusercontent.com/70105993/145674188-02baeb68-0ff9-4302-9bd2-9f5fe0ca713b.gif)

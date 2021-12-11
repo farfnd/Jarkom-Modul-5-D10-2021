@@ -45,9 +45,7 @@ Command tersebut berfungsi menolak/drop seluruh paket yang menuju subnet A1 (Dor
 
 Pengujian dilakukan dengan melakukan ping ke situs web yang masih menggunakan protokol HTTP seperti monta.if.its.ac.id dari Doriki/Jipangu.
 
-![recording(2)](https://user-images.githubusercontent.com/70105993/145673050-bbd0d9cd-e14b-4060-9b50-debf3dbc4c3e.gif)
-
-![recording(1)](https://user-images.githubusercontent.com/70105993/145672895-4f6b0c5f-4375-478f-b6d8-e67bebc68961.gif)
+![recording(5)](https://user-images.githubusercontent.com/70105993/145674382-395cdb51-10cf-4435-96ca-7f7b20d055ad.gif)
 
 ## Soal 3
 > Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop.

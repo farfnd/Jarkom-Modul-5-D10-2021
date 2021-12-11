@@ -33,6 +33,20 @@
 ## Soal 2
 > Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.
 
+Command yang dijalankan di Doriki (DNS server) dan Jipangu (DHCP server):
+```bash
+iptables -A FORWARD -d 10.26.7.128/29 -i eth0 -p tcp --dport 80 -j DROP
+```
+Command tersebut berfungsi menolak/drop seluruh paket yang menuju subnet A1 (Doriki-Jipangu-Water7) melalui port 80 (HTTP).
+
+**Pengujian**
+
+Pengujian dilakukan dengan melakukan ping ke situs web yang masih menggunakan protokol HTTP seperti monta.if.its.ac.id dari Doriki/Jipangu.
+
+![recording(2)](https://user-images.githubusercontent.com/70105993/145673050-bbd0d9cd-e14b-4060-9b50-debf3dbc4c3e.gif)
+
+![recording(1)](https://user-images.githubusercontent.com/70105993/145672895-4f6b0c5f-4375-478f-b6d8-e67bebc68961.gif)
+
 ## Soal 3
 > Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk membatasi DHCP dan DNS Server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan menggunakan iptables, selebihnya didrop.
 

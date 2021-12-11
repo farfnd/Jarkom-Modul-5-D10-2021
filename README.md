@@ -9,6 +9,8 @@
 ## Pendahuluan
 > (A) Tugas pertama kalian yaitu membuat topologi jaringan sesuai dengan rancangan yang diberikan Luffy di bawah ini:
 > 
+> ![image](https://user-images.githubusercontent.com/70105993/145669899-f12fb756-f9f5-43fa-95e4-ead742d04a13.png)
+> 
 > Keterangan:
 >   - Doriki adalah DNS Server
 >   - Jipangu adalah DHCP Server

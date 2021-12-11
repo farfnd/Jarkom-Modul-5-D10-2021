@@ -304,6 +304,15 @@ apt-get install bind9 -y
 2. Lakukan edit pada file `/etc/bind/named.conf.options` sehingga menjadi seperti di bawah ini
 ![/etc/bind/named.conf.options](https://cdn.discordapp.com/attachments/848199470025801749/919185477112852511/unknown.png)
 
+Untuk mendapatkan IP dinamis menggunakan DHCP, network configuration pada keempat client (Blueno, Cipher, Elena, Fukurou) diatur sebagai berikut:
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
+
 ## Soal 1
 > Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Foosha menggunakan iptables, tetapi Luffy tidak ingin menggunakan MASQUERADE.
 
@@ -425,7 +434,7 @@ iptables -t nat -A POSTROUTING -p tcp -d 10.26.7.138 -j SNAT --to-source 10.26.7
 iptables -t nat -A POSTROUTING -p tcp -d 10.26.7.139 -j SNAT --to-source 10.26.7.130
 ```
 
-Command tersebut menggunakan PREROUTING chain untuk mengarahkan paket yang awalnya menuju ke IP Doriki (10.26.7.130) sebagai DNS server ke Maingate (10.26.7.138) dan Jorge (10.26.7.139), serta POSTROUTING chain untuk mengubah alamat asal paket yang dikirim dari Maingate dan Jorge menjadi dari Doriki.
+Command tersebut menggunakan PREROUTING chain untuk mengarahkan paket yang awalnya menuju ke IP Doriki (10.26.7.130) sebagai DNS server ke Jorge (10.26.7.138) dan Maingate (10.26.7.139), serta POSTROUTING chain untuk mengubah alamat asal paket yang dikirim dari Maingate dan Jorge menjadi dari Doriki.
 
 **Pengujian**
 

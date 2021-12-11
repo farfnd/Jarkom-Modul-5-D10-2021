@@ -5,7 +5,6 @@
 - Farhan Arifandi (05111940000061)
 - Yusril Zubaydi (05111940000160)
 
-
 ## Pendahuluan
 > (A) Tugas pertama kalian yaitu membuat topologi jaringan sesuai dengan rancangan yang diberikan Luffy di bawah ini:
 > 
@@ -22,13 +21,295 @@
 
 > (B) Karena kalian telah belajar subnetting dan routing, Luffy ingin meminta kalian untuk membuat topologi tersebut menggunakan teknik CIDR atau VLSM. setelah melakukan subnetting,
 
+## Subnetting
+Subnetting yang kami lakukan di sini menggunakan teknk VLSM.
+![VLSM](https://cdn.discordapp.com/attachments/848199470025801749/919170962757410826/145669899-f12fb756-f9f5-43fa-95e4-ead742d04a13.png)
+
+Dari pembagian subnet tersebut didapatkan :
+| Subnet | Jumlah IP | Netmask |
+|--------|-----------|---------|
+| A1     | 3         | /29     |
+| A2     | 101       | /25     |
+| A3     | 701       | /22     |
+| A4     | 2         | /30     |
+| A5     | 2         | /30     |
+| A6     | 301       | /23     |
+| A7     | 201       | /24     |
+| A8     | 3         | /29     |
+| Total  | 1314      | /21     |
+
+Untuk treenya sebagai berikut :
+![tree](https://cdn.discordapp.com/attachments/848199470025801749/919173668423221258/prak5.jpg)
+
+Untuk tabel subnet lengkap sebagai berikut :
+
+| Subnet | Node                   | Network ID  | Netmask         | Broadcast Address |
+|--------|------------------------|-------------|-----------------|-------------------|
+| A1     | Doriki-Jipangu-Water7  | 10.26.7.128 | 255.255.255.248 | 10.26.7.135       |
+| A2     | Blueno-Water7          | 10.26.7.0   | 255.255.255.128 | 10.26.7.127       |
+| A3     | Cipher-Water7          | 10.26.0.0   | 255.255.252.0   | 10.26.0.255       |
+| A4     | Water7-Foosha          | 10.26.7.144 | 255.255.255.252 | 10.26.7.147       |
+| A5     | Foosha-Guanhao         | 10.26.7.148 | 255.255.255.252 | 10.26.7.151       |
+| A6     | Elena-Guanhao          | 10.26.4.0   | 255.255.254.0   | 10.26.4.255       |
+| A7     | Guanhao-Fukuro         | 10.26.6.0   | 255.255.255.0   | 10.26.6.255       |
+| A8     | Guanhao-Jorge-Maingate | 10.26.7.136 | 255.255.255.248 | 10.26.7.143       |
+
+Untuk setting network configuration tiap node seperti ini :
+* Foosha
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+hwaddress ether 6a:e6:46:00:b3:5b
+
+auto eth1
+iface eth1 inet static
+address 10.26.7.149
+netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+address 10.26.7.146
+netmask 255.255.255.252
+```
+* Water7
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.26.7.145
+netmask 255.255.255.252
+gateway 10.26.7.146
+
+auto eth1
+iface eth1 inet static
+address 10.26.7.1
+netmask 255.255.255.128
+
+auto eth2
+iface eth2 inet static
+address 10.26.0.1
+netmask 255.255.252.0
+
+auto eth3
+iface eth3 inet static
+address 10.26.7.129
+netmask 255.255.255.248
+```
+
+* Guanhao
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.26.7.150
+netmask 255.255.255.252
+gateway 10.26.7.149
+
+auto eth1
+iface eth1 inet static
+address 10.26.4.1
+netmask 255.255.254.0
+
+auto eth2
+iface eth2 inet static
+address 10.26.6.1
+netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+address 10.26.7.137
+netmask 255.255.255.248
+```
+
+* Doriki
+```
+auto eth0
+iface eth0 inet static
+address 10.26.7.130
+netmask 255.255.255.248
+gateway 10.26.7.129
+```
+
+* Jipangu
+```
+auto eth0
+iface eth0 inet static
+address 10.26.7.131
+netmask 255.255.255.248
+gateway 10.26.7.129
+```
+
+* Jorge
+```
+auto eth0
+iface eth0 inet static
+address 10.26.7.138
+netmask 255.255.255.248
+gateway 10.26.7.137
+```
+
+* MainGate
+```
+auto eth0
+iface eth0 inet static
+address 10.26.7.139
+netmask 255.255.255.248
+gateway 10.26.7.137
+```
+
+* Blueno
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
+
+* Cipher
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
+
+* Elena
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
+
+* Fukurou
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
+
 > (C) Kalian juga diharuskan melakukan Routing agar setiap perangkat pada jaringan tersebut dapat terhubung.
+
+Untuk Routing jalankan command ini pada router Foosha
+```
+# kiri
+route add -net 10.26.7.128 netmask 255.255.255.248 gw 10.26.7.145
+route add -net 10.26.7.0 netmask 255.255.255.128 gw 10.26.7.145
+route add -net 10.26.0.0 netmask 255.255.252.0 gw 10.26.7.145
+
+# kanan
+route add -net 10.26.4.0 netmask 255.255.254.0 gw 10.26.7.150
+route add -net 10.26.6.0 netmask 255.255.255.0 gw 10.26.7.150
+route add -net 10.26.7.136  netmask 255.255.255.248 gw 10.26.7.150
+```
+
+Setelah itu, kita bisa melakukan cek dengan command `route -n` dan akan menghasilkan seperti ini
+![routing](https://cdn.discordapp.com/attachments/848199470025801749/919178336285102080/unknown.png)
 
 > (D) Tugas berikutnya adalah memberikan IP pada subnet Blueno, Cipher, Fukurou, dan Elena secara dinamis menggunakan bantuan DHCP server. Kemudian kalian ingat bahwa kalian harus setting DHCP Relay pada router yang menghubungkannya.
 
+Untuk melakukan hal tersebut pertama, kita perlu menjadikan Jipangu sebagai DHCP Server
+
+Pada Jipangu
+1. Lakukan update dan install `isc-dhcp-server dengan` command
+```
+apt-get update
+apt-get install isc-dhcp-server -y
+```
+
+2. Lakukan edit pada `/etc/default/isc-dhcp-server` dengan menambahkan interface yang mengarah ke `Water7` sehingga menjadi seperti ini
+![/etc/default/isc-dhcp-server](https://cdn.discordapp.com/attachments/848199470025801749/919181243004911646/unknown.png)
+
+3. Edit file `/etc/dhcp/dhcpd.conf` dengan menambahkan ip pada tiap subnet
+```
+# Blueno A2
+subnet 10.26.7.0 netmask 255.255.255.128 {
+        range 10.26.7.2 10.26.7.126;
+        option routers 10.26.7.1;
+        option broadcast-address 10.26.7.127;
+        option domain-name-servers 10.26.7.130;
+        default-lease-time 600;
+        max-lease-time 7200;
+}
+
+# Cipher A3
+subnet 10.26.0.0 netmask 255.255.252.0 {
+        range 10.26.0.2 10.26.3.254;
+        option routers 10.26.0.1;
+        option broadcast-address 10.26.3.255;
+        option domain-name-servers 10.26.7.130;
+        default-lease-time 600;
+        max-lease-time 7200;
+}
+
+# Elena A6
+subnet 10.26.4.0 netmask 255.255.254.0 {
+        range 10.26.4.2 10.26.5.254;
+        option routers 10.26.4.1;
+        option broadcast-address 10.26.5.255;
+        option domain-name-servers 10.26.7.130;
+        default-lease-time 600;
+        max-lease-time 7200;
+}
+
+
+# Fukurou A7
+subnet 10.26.6.0 netmask 255.255.255.0 {
+        range 10.26.6.2 10.26.6.254;
+        option routers 10.26.6.1;
+        option broadcast-address 10.26.6.255;
+        option domain-name-servers 10.26.7.130;
+        default-lease-time 600;
+        max-lease-time 7200;
+}
+
+# Routing dari Jipangu ke router
+subnet 10.26.7.128 netmask 255.255.255.248 {
+        option routers 10.26.7.129;
+}
+```
+
+Setelah itu, kita juga perlu melakukan setting dhcp relay pada setiap router (Water7 dan Guanhao)
+
+1. Lakukan update dan install `isc-dhcp-relay`
+```
+apt-get update
+apt-get install isc-dhcp-relay -y
+```
+
+2. Edit file `/etc/default/isc-dhcp-relay` sehingga menjadi seperti di bawah ini
+![/etc/default/isc-dhcp-relay](https://cdn.discordapp.com/attachments/848199470025801749/919183734077534218/unknown.png)
+
+Terakhir, install DNS Server pada Doriki
+
+1. Update dan Install bind9 dengan command
+```
+apt-get update
+apt-get install bind9 -y
+```
+
+2. Lakukan edit pada file `/etc/bind/named.conf.options` sehingga menjadi seperti di bawah ini
+![/etc/bind/named.conf.options](https://cdn.discordapp.com/attachments/848199470025801749/919185477112852511/unknown.png)
 
 ## Soal 1
 > Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Foosha menggunakan iptables, tetapi Luffy tidak ingin menggunakan MASQUERADE.
+
+Pada Foosha, jalankan command berikut
+```
+iptables -t nat -A POSTROUTING -s 10.26.0.0/21 -o eth0 -j SNAT --to-source 192.168.122.105
+```
 
 ## Soal 2
 > Kalian diminta untuk mendrop semua akses HTTP dari luar Topologi kalian pada server yang merupakan DHCP Server dan DNS Server demi menjaga keamanan.

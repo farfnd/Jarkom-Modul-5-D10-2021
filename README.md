@@ -39,6 +39,7 @@ Dari pembagian subnet tersebut didapatkan :
 | Total  | 1314      | /21     |
 
 Untuk treenya sebagai berikut :
+
 ![tree](https://cdn.discordapp.com/attachments/848199470025801749/919173668423221258/prak5.jpg)
 
 Untuk tabel subnet lengkap sebagai berikut :

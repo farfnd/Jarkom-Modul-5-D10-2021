@@ -315,7 +315,7 @@ iface eth0 inet dhcp
 
 ![image](https://user-images.githubusercontent.com/70105993/145676485-afe4be40-7839-4daa-b918-62dcce773af3.png)
 
-![image](https://user-images.githubusercontent.com/70105993/145676491-48809fb1-3a29-4462-9783-678250ecee47.png)
+![image](https://user-images.githubusercontent.com/70105993/145676628-cfe90a69-90e6-4e32-9cf0-7114bc814409.png)
 
 ![image](https://user-images.githubusercontent.com/70105993/145676496-f7635a31-126b-41a8-afe5-fc885a8fa814.png)
 
